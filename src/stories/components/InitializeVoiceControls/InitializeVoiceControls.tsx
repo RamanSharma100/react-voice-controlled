@@ -4,6 +4,7 @@ import {
   faMicrophoneSlash,
   faTableCells,
 } from "@fortawesome/free-solid-svg-icons";
+import { recognition } from "../../APIs/speechRecognitionAPI";
 
 import { Button } from "../Button/Button";
 
@@ -11,8 +12,35 @@ import "./InitializeVoiceControls.css";
 
 export const InitializeVoiceControls = () => {
   const [isListening, setIsListening] = React.useState(false);
-  const [isInstrctionTableOpened, setIsInstrctionTableOpened] =
+  const [isInstructionTableOpened, setIsInstructionTableOpened] =
     React.useState(false);
+
+  const startRecognition = () => {
+    recognition.start();
+    setIsListening(true);
+  };
+
+  const stopRecognition = () => {
+    recognition.stop();
+    setIsListening(false);
+  };
+
+  recognition.onstart = () => {
+    console.log("Voice recognition activated.");
+  };
+
+  recognition.onresult = (event: Object) => {
+    console.log(event);
+  };
+
+  recognition.onend = () => {
+    if (isListening) {
+      recognition.start();
+    } else {
+      console.log("Voice recognition deactivated.");
+      recognition.stop();
+    }
+  };
 
   return (
     <>
@@ -22,14 +50,16 @@ export const InitializeVoiceControls = () => {
             isListening ? "button-unmute" : "button-mute"
           }`}
           faIcon={isListening ? faMicrophone : faMicrophoneSlash}
-          onClick={() => setIsListening(!isListening)}
+          onClick={() => {
+            isListening ? stopRecognition() : startRecognition();
+          }}
         />
         <Button
           className={`icon-button ${
-            isInstrctionTableOpened ? "button-unmute" : "button-mute"
+            isInstructionTableOpened ? "button-unmute" : "button-mute"
           }`}
           faIcon={faTableCells}
-          onClick={() => setIsInstrctionTableOpened(!isInstrctionTableOpened)}
+          onClick={() => setIsInstructionTableOpened(!isInstructionTableOpened)}
         />
       </div>
     </>
