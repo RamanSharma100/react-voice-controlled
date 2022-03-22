@@ -16,6 +16,30 @@ const Template: ComponentStory<typeof InitializeVoiceControls> = (
   args: any
 ) => <InitializeVoiceControls {...args} />;
 
-export const InitializeVoiceControlsComponent = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-InitializeVoiceControlsComponent.args = {};
+export const EnableNavigationControls = Template.bind({});
+
+EnableNavigationControls.args = {
+  enableNavigationControls: true,
+  routes: ["/", "/about", "/contact"],
+  commands: {
+    navigation: ["go to", "navigate to"],
+  },
+};
+
+EnableNavigationControls.argTypes = {
+  enableNavigationControls: {
+    control: {
+      type: "boolean",
+    },
+  },
+  routes: {
+    control: {
+      type: "array",
+    },
+  },
+  commands: {
+    control: {
+      type: "object",
+    },
+  },
+};
