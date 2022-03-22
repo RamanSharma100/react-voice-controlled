@@ -1,0 +1,8 @@
+.initialize-voice-controls-box-layer {
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
