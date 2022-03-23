@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./InitializeVoiceControls.css";
 import { IVoiceCommandsProps } from "../../interfaces";
 import { checkCommandType, ICommandType } from "../../methods/checkCommandType";
+import VoiceControlsInstructionTable from "../VoiceControlsInstructionTable/VoiceControlsInstructionTable";
 
 interface InitializeVoiceControlsProps {
   commands: IVoiceCommandsProps;
@@ -33,7 +34,7 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
 }) => {
   const [isListening, setIsListening] = React.useState<boolean>(false);
   const [isInstructionTableOpened, setIsInstructionTableOpened] =
-    React.useState<boolean>(false);
+    React.useState<boolean>(true);
 
   const startRecognition = (): void => {
     recognition.start();
@@ -57,7 +58,54 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
       commands,
       command
     );
-    console.log(command);
+
+    //stop taking commands
+
+    if (isListening && command.toLowerCase().includes("stop taking commands")) {
+      stopRecognition();
+
+      return;
+    }
+
+    // open commands table commands
+    if (
+      isListening &&
+      (command.toLowerCase().includes("open commands table") ||
+        command.toLowerCase().includes("open command table") ||
+        command.toLowerCase().includes("open instruction table") ||
+        command.toLowerCase().includes("close command table") ||
+        command.toLowerCase().includes("close instruction table") ||
+        command.toLowerCase().includes("close commands table"))
+    ) {
+      if (
+        command.toLowerCase().includes("open commands table") ||
+        command.toLowerCase().includes("open command table") ||
+        command.toLowerCase().includes("open instruction table")
+      ) {
+        if (!isInstructionTableOpened) {
+          setIsInstructionTableOpened(true);
+          toast.info("Opened Commands Table!");
+        } else {
+          toast.info("Commands Table is already opened!");
+          toast.info("Try, Close Commands Table Command");
+        }
+      }
+
+      if (
+        command.toLowerCase().includes("close command table") ||
+        command.toLowerCase().includes("close instruction table") ||
+        command.toLowerCase().includes("close commands table")
+      ) {
+        if (isInstructionTableOpened) {
+          setIsInstructionTableOpened(false);
+          toast.info("Closed Commands Table!");
+        } else {
+          toast.info("Commands Table is already closed!");
+          toast.info("Try, Open Commands Table Command");
+        }
+      }
+    }
+
     // navigation commands
     if (enableNavigationControls) {
       if (commandType === "navigation") {
@@ -100,6 +148,19 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
   return (
     <>
       <ToastContainer />
+
+      {isInstructionTableOpened && (
+        <VoiceControlsInstructionTable
+          commands={commands}
+          enableNavigationControls={enableNavigationControls}
+          enableScrollingControls={enableScrollingControls}
+          setIsInstructionTableOpened={setIsInstructionTableOpened}
+          routes={routes}
+          startRecognition={startRecognition}
+          isListening={isListening}
+        />
+      )}
+
       <div className="initialize-voice-controls-box-layer">
         <Button
           className={`icon-button ${
@@ -115,7 +176,14 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
             isInstructionTableOpened ? "button-unmute" : "button-mute"
           }`}
           faIcon={faTableCells}
-          onClick={() => setIsInstructionTableOpened(!isInstructionTableOpened)}
+          onClick={() => {
+            setIsInstructionTableOpened(!isInstructionTableOpened);
+            toast.info(
+              isInstructionTableOpened
+                ? "Closed Instruction Table"
+                : "Opened Instruction Table"
+            );
+          }}
         />
       </div>
     </>
