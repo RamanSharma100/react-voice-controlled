@@ -12,14 +12,11 @@ import { Button } from "../Button/Button";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./InitializeVoiceControls.css";
-
-interface VoiceCommandsProps {
-  navigation?: string[];
-  scrolling?: string[];
-}
+import { IVoiceCommandsProps } from "../../interfaces";
+import { checkCommandType, ICommandType } from "../../methods/checkCommandType";
 
 interface InitializeVoiceControlsProps {
-  commands: VoiceCommandsProps;
+  commands: IVoiceCommandsProps;
   routes?: string[];
   enableNavigationControls: boolean;
   enableScrollingControls: boolean;
@@ -55,24 +52,37 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
   };
 
   recognition.onresult = (event: any): void => {
-    const command: string = event.results[0][0].transcript;
+    const command: string = event.results[0][0].transcript.replace(".", "");
+    const { commandType, cmd, cmdName }: ICommandType = checkCommandType(
+      commands,
+      command
+    );
     console.log(command);
     // navigation commands
     if (enableNavigationControls) {
-      if (
-        commands.navigation?.find((cmd) =>
-          cmd.toLowerCase().includes(command.toLowerCase())
-        )
-      ) {
-        console.log("Navigation command detected!");
-        const routeName = command.replace(/\s/g, "");
-        console.log(routeName);
-        // if(routes.includes(command)) {
-        //   window.location.href = command;
+      if (commandType === "navigation") {
+        let route: string = "";
+        if (commands.navigation?.includes(cmdName.toLowerCase())) {
+          if (command.split(" ")[command.split(" ").length - 1] === "page") {
+            route = cmd.split(" ")[cmd.split(" ").indexOf("page") - 1];
+          }
+          if (command.split(" ")[command.split(" ").length - 1] === "route") {
+            route = cmd.split(" ")[cmd.split(" ").indexOf("route") - 1];
+          }
 
-        // } else {
-        //   toast.error(`Command not found: ${command}`);
-        // }
+          if (route && route !== "") {
+            if (route === "home" || route === "index") {
+              window.location.href = "/";
+              return;
+            }
+            if (routes.includes("/" + route)) {
+              window.location.href = "/" + route;
+              return;
+            } else {
+              toast.error("This route is not available!");
+            }
+          }
+        }
       }
     }
   };
