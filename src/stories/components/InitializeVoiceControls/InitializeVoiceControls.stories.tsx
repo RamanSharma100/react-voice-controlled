@@ -2,6 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 import { InitializeVoiceControls } from "./InitializeVoiceControls";
+import { DEFAULT_SCROLLING_COMMANDS } from "../../constants";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -16,17 +17,19 @@ const Template: ComponentStory<typeof InitializeVoiceControls> = (
   args: any
 ) => <InitializeVoiceControls {...args} />;
 
-export const EnableNavigationControls = Template.bind({});
+export const EnableVoiceControls = Template.bind({});
 
-EnableNavigationControls.args = {
+EnableVoiceControls.args = {
   enableNavigationControls: true,
   routes: ["/", "/about", "/contact"],
+  enableScrollingControls: true,
   commands: {
     navigation: ["go to", "navigate to"],
+    scrolling: [...DEFAULT_SCROLLING_COMMANDS],
   },
 };
 
-EnableNavigationControls.argTypes = {
+EnableVoiceControls.argTypes = {
   enableNavigationControls: {
     control: {
       type: "boolean",

@@ -15,6 +15,7 @@ import "./InitializeVoiceControls.css";
 import { IVoiceCommandsProps } from "../../interfaces";
 import { checkCommandType, ICommandType } from "../../methods/checkCommandType";
 import VoiceControlsInstructionTable from "../VoiceControlsInstructionTable/VoiceControlsInstructionTable";
+import { DEFAULT_SCROLLING_COMMANDS } from "../../constants";
 
 interface InitializeVoiceControlsProps {
   commands: IVoiceCommandsProps;
@@ -26,7 +27,7 @@ interface InitializeVoiceControlsProps {
 export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
   commands = {
     navigation: [],
-    scrolling: [],
+    scrolling: [...DEFAULT_SCROLLING_COMMANDS],
   },
   enableNavigationControls = false,
   enableScrollingControls = false,
@@ -35,6 +36,10 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
   const [isListening, setIsListening] = React.useState<boolean>(false);
   const [isInstructionTableOpened, setIsInstructionTableOpened] =
     React.useState<boolean>(true);
+
+  const maxScroll =
+    document.documentElement.scrollHeight -
+    document.documentElement.clientHeight;
 
   const startRecognition = (): void => {
     recognition.start();
@@ -128,6 +133,60 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
               return;
             } else {
               toast.error("This route is not available!");
+            }
+          }
+        }
+      }
+    }
+
+    // scrolling commands
+    if (enableScrollingControls) {
+      if (commandType === "scrolling") {
+        if (commands.scrolling?.includes(cmdName.toLowerCase())) {
+          if (cmdName === "scroll to top" || cmdName === "move to top") {
+            window.scrollTo(0, 0);
+            return;
+          }
+          if (cmdName === "scroll to bottom" || cmdName === "move to bottom") {
+            window.scrollTo(0, maxScroll);
+            return;
+          }
+          if (cmdName === "scroll to middle" || cmdName === "move to middle") {
+            window.scrollTo(0, maxScroll / 2);
+            return;
+          }
+
+          if (
+            command.toLowerCase().includes("px") ||
+            command.toLowerCase().includes("pixels") ||
+            command.toLowerCase().includes("pixel") ||
+            command.toLowerCase().includes("%") ||
+            command.toLowerCase().includes("percent") ||
+            command.toLowerCase().includes("percentage")
+          ) {
+            const px_per: number =
+              Number(
+                command.split(" ")[command.split(" ").indexOf("px") - 1]
+              ) ||
+              Number(
+                command.split(" ")[command.split(" ").indexOf("pixels") - 1]
+              ) ||
+              Number(
+                command.split(" ")[command.split(" ").indexOf("pixel") - 1]
+              ) ||
+              Number(command.split(" ")[command.split(" ").indexOf("%") - 1]) ||
+              Number(
+                command.split(" ")[command.split(" ").indexOf("percent") - 1]
+              ) ||
+              Number(
+                command.split(" ")[command.split(" ").indexOf("percentage") - 1]
+              );
+            console.log(command);
+            if (command.toLowerCase().includes("by")) {
+              window.scrollBy(0, px_per);
+            }
+            if (command.toLowerCase().includes("to")) {
+              window.scrollTo(0, px_per);
             }
           }
         }

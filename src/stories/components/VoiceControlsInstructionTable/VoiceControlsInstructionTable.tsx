@@ -1,6 +1,7 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import React, { FunctionComponent as FC } from "react";
 import { toast } from "react-toastify";
+import { DEFAULT_SCROLLING_COMMANDS } from "../../constants";
 import { IVoiceCommandsProps } from "../../interfaces";
 
 import { Button } from "../Button/Button";
@@ -164,7 +165,13 @@ const VoiceControlsInstructionTable: FC<IVoiceControlsInstructionTableProps> =
                             (command: string, index: number) => (
                               <>
                                 {" "}
-                                {command + " <__route_name___> page/route , "}
+                                {index +
+                                  1 +
+                                  ") " +
+                                  command +
+                                  " <__route_name___> page/route"}
+                                <br />
+                                <br />
                               </>
                             )
                           )}
@@ -175,6 +182,8 @@ const VoiceControlsInstructionTable: FC<IVoiceControlsInstructionTableProps> =
                 </table>
               </div>
             )}
+
+            {/* scrolling commands */}
 
             {enableScrollingControls && (
               <div className="instruction-table-row">
@@ -208,13 +217,29 @@ const VoiceControlsInstructionTable: FC<IVoiceControlsInstructionTableProps> =
                         </p>
                         <p className="instruction-table-row-examples">
                           {commands.scrolling?.map(
-                            (command: string, index: number) => (
-                              <>
-                                {" "}
-                                {command +
-                                  " <__number___> percent/pixel/px/% , "}
-                              </>
-                            )
+                            (command: string, index: number) =>
+                              !DEFAULT_SCROLLING_COMMANDS.find(
+                                (cmd: string) =>
+                                  command.toLowerCase().includes(cmd) && cmd
+                              ) ? (
+                                <>
+                                  {" "}
+                                  {index +
+                                    1 +
+                                    ") " +
+                                    command +
+                                    " <__number___> percent/pixel/px/%"}
+                                  <br />
+                                  <br />
+                                </>
+                              ) : (
+                                <>
+                                  {" "}
+                                  {index + 1 + ") " + command}
+                                  <br />
+                                  <br />
+                                </>
+                              )
                           )}
                         </p>
                       </td>
