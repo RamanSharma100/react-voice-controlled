@@ -1,11 +1,11 @@
 declare global {
   interface Window {
-    SpeechRecognition: any;
+    speechRecognition: any;
     webkitSpeechRecognition: any;
   }
 }
 
 const speechRecognition =
-  window.SpeechRecognition || window.webkitSpeechRecognition;
+  window.speechRecognition || window.webkitSpeechRecognition || null;
 
-export const recognition = new speechRecognition();
+export const recognition = new speechRecognition() || null;

@@ -36,6 +36,8 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
   const [isListening, setIsListening] = React.useState<boolean>(false);
   const [isInstructionTableOpened, setIsInstructionTableOpened] =
     React.useState<boolean>(true);
+  const [isSpeechRecognitionSupported, setIsSpeechRecognitionSupported] =
+    React.useState<boolean>(false);
 
   const maxScroll =
     document.documentElement.scrollHeight -
@@ -156,6 +158,16 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
             return;
           }
 
+          if (cmdName === "scroll down" || cmdName === "move down") {
+            window.scrollBy(0, 100);
+            return;
+          }
+
+          if (cmdName === "scroll up" || cmdName === "move up") {
+            window.scrollBy(0, -100);
+            return;
+          }
+
           if (
             command.toLowerCase().includes("px") ||
             command.toLowerCase().includes("pixels") ||
@@ -204,11 +216,21 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
     }
   };
 
+  React.useEffect(() => {
+    if ("speechRecognition" in window || "webkitSpeechRecognition" in window) {
+      setIsSpeechRecognitionSupported(true);
+    } else {
+      setIsSpeechRecognitionSupported(false);
+      alert("Speech Recognition is not available on this browser!");
+      alert("Please switch to Chromium based browsers or Safari!");
+    }
+  }, []);
+
   return (
     <>
       <ToastContainer />
 
-      {isInstructionTableOpened && (
+      {isInstructionTableOpened && isSpeechRecognitionSupported && (
         <VoiceControlsInstructionTable
           commands={commands}
           enableNavigationControls={enableNavigationControls}
@@ -220,31 +242,33 @@ export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
         />
       )}
 
-      <div className="initialize-voice-controls-box-layer">
-        <Button
-          className={`icon-button ${
-            isListening ? "button-unmute" : "button-mute"
-          }`}
-          faIcon={isListening ? faMicrophone : faMicrophoneSlash}
-          onClick={() => {
-            isListening ? stopRecognition() : startRecognition();
-          }}
-        />
-        <Button
-          className={`icon-button ${
-            isInstructionTableOpened ? "button-unmute" : "button-mute"
-          }`}
-          faIcon={faTableCells}
-          onClick={() => {
-            setIsInstructionTableOpened(!isInstructionTableOpened);
-            toast.info(
-              isInstructionTableOpened
-                ? "Closed Instruction Table"
-                : "Opened Instruction Table"
-            );
-          }}
-        />
-      </div>
+      {isSpeechRecognitionSupported && (
+        <div className="initialize-voice-controls-box-layer">
+          <Button
+            className={`icon-button ${
+              isListening ? "button-unmute" : "button-mute"
+            }`}
+            faIcon={isListening ? faMicrophone : faMicrophoneSlash}
+            onClick={() => {
+              isListening ? stopRecognition() : startRecognition();
+            }}
+          />
+          <Button
+            className={`icon-button ${
+              isInstructionTableOpened ? "button-unmute" : "button-mute"
+            }`}
+            faIcon={faTableCells}
+            onClick={() => {
+              setIsInstructionTableOpened(!isInstructionTableOpened);
+              toast.info(
+                isInstructionTableOpened
+                  ? "Closed Instruction Table"
+                  : "Opened Instruction Table"
+              );
+            }}
+          />
+        </div>
+      )}
     </>
   );
 };

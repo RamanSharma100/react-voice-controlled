@@ -26,6 +26,20 @@ or
 
 3. Simply call `InitializeVoiceControls` in your App js to enable voice controls.
 
+## Supportted Browsers
+
+As this library using `speech recognition` API of javascript and this API donot support many browsers.
+
+So, this library will also work in some browsers as given below:-
+
+1. Chrome
+2. Microsoft Edge
+3. Safari
+4. WebView Android
+5. Chrome Android
+6. Safari iOS
+7. Samsung Internet
+
 ## Example and Demo
 
     import React from 'react';
@@ -63,18 +77,36 @@ or
 
 ## Arguments
 
-    **commands**:
-    `Object {scrolling: string[], navigation: string[]}` *optional* *required according to enableNavigationCommands and enableScrollingCommands*
-    An object containing the commands you want to use.
+**commands**:
+`Object {scrolling: string[], navigation: string[]}` **_optional_** **_required according to enableNavigationCommands and enableScrollingCommands_**
 
-    **enableNavigationControls**:
-    `boolean` *optional* *required with routes and navigation commands*
-    A boolean value that determines whether you want to enable navigation controls.
+An object containing the commands you want to use.
 
-    **enableScrollingControls**:
-    `boolean` *optional* *required with scrolling commmands*
-    A boolean value that determines whether you want to enable scrolling controls.
+_default_: `{ navigation: ['go to', 'navigate to'], scrolling: ['scroll by', 'scroll to', 'move by', 'scroll by',"scroll down", "move down", "scroll up", "move up"] }` when enableNavigationCommands and enableScrollingCommands are `true` accordingly.
 
-    **routes**:
-    `string[]` *optional* *required with enableNavigationControls*
-    An array of strings that contains the routes you want to use.
+**enableNavigationControls**:
+`boolean` **_optional_**
+
+**_required with routes and navigation commands_**
+
+A boolean value that determines whether you want to enable navigation controls.
+
+_default_: `false`
+
+**enableScrollingControls**:
+`boolean` **_optional_**
+
+**_required with scrolling commmands_**
+
+A boolean value that determines whether you want to enable scrolling controls.
+
+_default_: `false`
+
+**routes**:
+`string[]` **_optional_**
+
+**_required with enableNavigationControls_**
+
+An array of strings that contains the routes you want to use.
+
+_default_: `[]`
