@@ -15,7 +15,7 @@ import "./InitializeVoiceControls.css";
 import { IVoiceCommandsProps } from "../../interfaces";
 import { checkCommandType, ICommandType } from "../../methods/checkCommandType";
 import VoiceControlsInstructionTable from "../VoiceControlsInstructionTable/VoiceControlsInstructionTable";
-import { DEFAULT_SCROLLING_COMMANDS } from "../../constants";
+// import { DEFAULT_SCROLLING_COMMANDS } from "../../constants";
 
 interface InitializeVoiceControlsProps {
   commands: IVoiceCommandsProps;
@@ -27,7 +27,22 @@ interface InitializeVoiceControlsProps {
 export const InitializeVoiceControls: FC<InitializeVoiceControlsProps> = ({
   commands = {
     navigation: [],
-    scrolling: [...DEFAULT_SCROLLING_COMMANDS],
+    scrolling: [
+      "scroll up",
+      "scroll down",
+      "move up",
+      "move down",
+      "scroll to top",
+      "scroll to bottom",
+      "move to top",
+      "move to bottom",
+      "scroll to middle",
+      "move to middle",
+      "scroll by",
+      "scroll to",
+      "move by",
+      "scroll by",
+    ],
   },
   enableNavigationControls = false,
   enableScrollingControls = false,

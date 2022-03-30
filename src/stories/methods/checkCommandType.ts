@@ -1,3 +1,5 @@
+import { DEFAULT_SCROLLING_COMMANDS } from "../constants";
+
 export interface ICommandType {
   commandType: string;
   cmd: string;
@@ -10,10 +12,17 @@ export const checkCommandType = (
   let cmdName: string = "",
     cmdType: string = "";
   Object.keys(commandsList).forEach((cType: string) => {
+    if (cType === "scrolling") {
+      commandsList[cType] = [
+        ...commandsList[cType],
+        ...DEFAULT_SCROLLING_COMMANDS,
+      ];
+    }
     const commandName = commandsList[cType.toLowerCase()].find(
       (cmd: string) => command.toLowerCase().includes(cmd.toLowerCase()) && cmd
     );
     cmdName = commandName;
+    console.log(commandName);
 
     if (commandName) {
       cmdType = cType;

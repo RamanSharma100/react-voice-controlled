@@ -25,7 +25,7 @@ EnableVoiceControls.args = {
   enableScrollingControls: true,
   commands: {
     navigation: ["go to", "navigate to"],
-    scrolling: [...DEFAULT_SCROLLING_COMMANDS],
+    scrolling: [],
   },
 };
 

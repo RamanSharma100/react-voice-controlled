@@ -200,7 +200,7 @@ const VoiceControlsInstructionTable: FC<IVoiceControlsInstructionTableProps> =
                   <tbody className="instruction-table-tbody">
                     <tr>
                       <td>
-                        {commands.scrolling?.map(
+                        {DEFAULT_SCROLLING_COMMANDS.map(
                           (command: string, index: number) => (
                             <p
                               key={index * Math.random() * command.length}

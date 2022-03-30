@@ -8,4 +8,4 @@ declare global {
 const speechRecognition =
   window.speechRecognition || window.webkitSpeechRecognition || null;
 
-export const recognition = new speechRecognition() || null;
+export const recognition = speechRecognition ? new speechRecognition() : null;
