@@ -1,4 +1,4 @@
-# react-voice-controlled 🎙️💻
+# react-voice-controlled (V 1.0.2) 🎙️💻
 
 A React library that enables voice controls for your React apps without the need of extra code.
 
