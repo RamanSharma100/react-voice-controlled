@@ -11,18 +11,18 @@ export const checkCommandType = (
 ): ICommandType => {
   let cmdName: string = "",
     cmdType: string = "";
+  commandsList.scrolling = [
+    ...DEFAULT_SCROLLING_COMMANDS,
+    ...(commandsList.scrolling || []),
+  ];
+  console.log(commandsList);
   Object.keys(commandsList).forEach((cType: string) => {
-    if (cType === "scrolling") {
-      commandsList[cType] = [
-        ...commandsList[cType],
-        ...DEFAULT_SCROLLING_COMMANDS,
-      ];
-    }
     const commandName = commandsList[cType.toLowerCase()].find(
       (cmd: string) => command.toLowerCase().includes(cmd.toLowerCase()) && cmd
     );
     cmdName = commandName;
     console.log(commandName);
+    console.log(cType);
 
     if (commandName) {
       cmdType = cType;

@@ -82,7 +82,7 @@ So, this library will also work in some browsers as given below:-
 
 An object containing the commands you want to use.
 
-_default_: `{ navigation: ['go to', 'navigate to'], scrolling: ['scroll by', 'scroll to', 'move by', 'scroll by',"scroll down", "move down", "scroll up", "move up"] }` when enableNavigationCommands and enableScrollingCommands are `true` accordingly.
+_default_: `{ navigation: [], scrolling: ['scroll by', 'scroll to', 'move by', 'scroll by',"scroll down", "move down", "scroll up", "move up"] }` when enableNavigationCommands and enableScrollingCommands are `true` accordingly.
 
 **enableNavigationControls**:
 `boolean` **_optional_**
